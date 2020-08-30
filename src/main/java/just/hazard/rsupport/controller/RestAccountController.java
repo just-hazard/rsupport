@@ -21,15 +21,6 @@ public class RestAccountController {
     @PostMapping("/login")
     public LoginDto login(@RequestBody Account account) throws AccountNotFoundException {
 
-        Account result = accountService.findByEmail(account.getEmail());
-        if(result == null || !result.getPassword().equals(account.getPassword())) {
-            throw new AccountNotFoundException();
-        }
-
-        LoginDto loginDto = new LoginDto();
-        loginDto.setEmail(result.getEmail());
-        loginDto.setPassword(result.getPassword());
-
-        return loginDto;
+        return accountService.restFindByEmail(account);
     }
 }

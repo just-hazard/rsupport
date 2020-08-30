@@ -9,8 +9,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Setter
-@Getter
 @Entity
 public class Account {
 
@@ -26,4 +24,35 @@ public class Account {
     @OneToMany(mappedBy = "user")
     private List<Notice> list = new ArrayList<>();
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<Notice> getList() {
+        return list;
+    }
+
+    public void setList(List<Notice> list) {
+        this.list = list;
+    }
 }

@@ -16,6 +16,11 @@ public class RestBoardController {
     @Autowired
     private BoardService boardService;
 
+    @GetMapping("/board")
+    public Page<Notice> restList(Pageable pageable) {
+        return boardService.findAll(pageable);
+    }
+
     @PostMapping("/board")
     @ResponseStatus(HttpStatus.CREATED)
     public Notice restWrite(@RequestBody Notice notice) {

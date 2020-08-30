@@ -23,12 +23,6 @@ public class AccountController {
     @PostMapping("/login")
     public String postLogin(Account account, HttpSession session) {
 
-        Account result = accountService.findByEmail(account.getEmail());
-        if(!result.getPassword().equals(account.getPassword())) {
-            return "login";
-        }
-        session.setAttribute("user",result);
-
-        return "redirect:/board/list";
+        return accountService.findByEmail(account, session);
     }
 }
