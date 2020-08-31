@@ -19,8 +19,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -35,8 +34,6 @@ class RestBoardControllerTest {
     @Autowired
     private BoardRepository boardRepository;
 
-    @Autowired
-    private WebApplicationContext webApplicationContext;
 
     private Account account;
 
@@ -44,7 +41,6 @@ class RestBoardControllerTest {
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
         account = new Account();
         account.setId(1L);
@@ -55,6 +51,22 @@ class RestBoardControllerTest {
         notice.setTitle("제목");
         notice.setContent("내용");
         notice.setUser(account);
+    }
+
+    @Test
+    public void list() throws Exception {
+         mockMvc.perform(get("/rest/board")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("content[0].id").exists())
+                .andExpect(jsonPath("content[0].id").value("1"))
+                .andExpect(jsonPath("content[0].title").exists())
+                .andExpect(jsonPath("content[0].title").value("제목0"))
+                .andExpect(jsonPath("content[0].content").exists())
+                .andExpect(jsonPath("content[0].content").value("내용"))
+                .andExpect(jsonPath("content[0].startDate").exists())
+                .andExpect(jsonPath("content[0].updateDate").exists());
+
     }
 
     @Test

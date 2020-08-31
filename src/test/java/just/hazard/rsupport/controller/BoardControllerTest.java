@@ -34,14 +34,10 @@ public class BoardControllerTest {
     @Autowired
     private BoardRepository boardRepository;
 
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-
     private MockHttpSession session = new MockHttpSession();
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
         Account account = new Account();
         account.setId(1L);
@@ -90,7 +86,7 @@ public class BoardControllerTest {
 
 
         Long count = boardRepository.count();
-        notice = boardRepository.getOne(count+1);
+        notice = boardRepository.getOne(count);
         Assertions.assertEquals("제목",notice.getTitle());
         Assertions.assertEquals("내용",notice.getContent());
         Assertions.assertEquals("admin",notice.getUser().getEmail());

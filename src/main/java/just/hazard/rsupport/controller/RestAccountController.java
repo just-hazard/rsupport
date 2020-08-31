@@ -4,6 +4,7 @@ import just.hazard.rsupport.domain.Account;
 import just.hazard.rsupport.domain.LoginDto;
 import just.hazard.rsupport.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +20,7 @@ public class RestAccountController {
     AccountService accountService;
 
     @PostMapping("/login")
-    public LoginDto login(@RequestBody Account account) throws AccountNotFoundException {
-
+    public ResponseEntity<String> login(@RequestBody Account account) throws AccountNotFoundException {
         return accountService.restFindByEmail(account);
     }
 }

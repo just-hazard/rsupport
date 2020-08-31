@@ -1,6 +1,7 @@
 package just.hazard.rsupport.controller;
 
 import just.hazard.rsupport.domain.Notice;
+import just.hazard.rsupport.domain.NoticeListDto;
 import just.hazard.rsupport.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,7 +18,7 @@ public class RestBoardController {
     private BoardService boardService;
 
     @GetMapping("/board")
-    public Page<Notice> restList(Pageable pageable) {
+    public Page<NoticeListDto> restList(Pageable pageable) {
         return boardService.findAll(pageable);
     }
 

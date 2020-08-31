@@ -1,7 +1,8 @@
 package just.hazard.rsupport.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import just.hazard.rsupport.domain.Account;
-import just.hazard.rsupport.repository.AccountRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,41 +13,38 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static io.florianlopes.spring.test.web.servlet.request.MockMvcRequestBuilderUtils.postForm;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class AccountControllerTest {
+class RestAccountControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    public void getLogin() throws Exception {
-        mockMvc.perform(get("/login")
-                .contentType(MediaType.TEXT_HTML))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(view().name("login"));
-    }
-
-    @Test
-    public void postLogin() throws Exception {
-
+    public void restLogin() throws Exception {
         // given
         Account account = new Account();
         account.setEmail("admin");
         account.setPassword("1234");
 
         // when
-        mockMvc.perform(postForm("/login",account)
-        // then
-                .contentType(MediaType.MULTIPART_FORM_DATA))
+        mockMvc.perform(post("/rest/login",account)
+                // then
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(serialize(account)))
                 .andDo(print())
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/board/list"));
+                .andExpect(status().isOk())
+                .andExpect(content().string("success"));
     }
+
+    private String serialize(Account account) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(account);
+    }
+
 }

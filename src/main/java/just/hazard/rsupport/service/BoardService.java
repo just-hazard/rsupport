@@ -1,6 +1,8 @@
 package just.hazard.rsupport.service;
 
 import just.hazard.rsupport.domain.Notice;
+import just.hazard.rsupport.domain.NoticeListDto;
+import just.hazard.rsupport.mapper.NoticeListMapper;
 import just.hazard.rsupport.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,14 +16,24 @@ public class BoardService {
 
     @Autowired
     private BoardRepository boardRepository;
+    @Autowired
+    private NoticeListMapper noticeListMapper;
 
     public Notice save(Notice notice) {
         boardRepository.save(notice);
         return notice;
     }
 
-    public Page<Notice> findAll(Pageable pageable) {
-        return boardRepository.findAll(pageable);
+    public Notice save(Notice notice, Long id) {
+        Notice user = boardRepository.getOne(id);
+        notice.setId(id);
+        notice.setUser(user.getUser());
+        return boardRepository.save(notice);
+    }
+
+    public Page<NoticeListDto> findAll(Pageable pageable) {
+        Page<Notice> result = boardRepository.findAllJoinFetch(pageable);
+        return result.map(notice -> noticeListMapper.toDto(notice));
     }
 
     public Optional<Notice> read(Long id) {
@@ -30,12 +42,5 @@ public class BoardService {
 
     public void delete(Long id) {
         boardRepository.deleteById(id);
-    }
-
-    public Notice save(Notice notice, Long id) {
-        Notice user = boardRepository.getOne(id);
-        notice.setId(id);
-        notice.setUser(user.getUser());
-        return boardRepository.save(notice);
     }
 }

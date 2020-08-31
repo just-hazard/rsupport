@@ -2,6 +2,7 @@ package just.hazard.rsupport.controller;
 
 import just.hazard.rsupport.domain.Account;
 import just.hazard.rsupport.domain.Notice;
+import just.hazard.rsupport.domain.NoticeListDto;
 import just.hazard.rsupport.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,7 +24,7 @@ public class BoardController {
     @GetMapping("/list")
     public String getList(Pageable pageable, Model model) {
 
-        Page<Notice> list = boardService.findAll(pageable);
+        Page<NoticeListDto> list = boardService.findAll(pageable);
         model.addAttribute("list",list);
 
         return "/board/list";

@@ -1,8 +1,5 @@
 package just.hazard.rsupport.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -29,7 +26,7 @@ public class Notice {
     @UpdateTimestamp
     private LocalDate updateDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Account user;
 
     public Long getId() {
